@@ -1,0 +1,15 @@
+*{
+    font-family: 'Baloo Bhaijaan 2';
+}
+body{
+direction: rtl;
+margin:0px auto;
+}
+.form{
+    width:40%;
+    margin:0px auto;
+    font-family: 'Baloo Bhaijaan 2';
+}
+.bi{
+    color:#ccc;
+}

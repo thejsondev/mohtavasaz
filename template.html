@@ -1,0 +1,31 @@
+<div class="container pt-5">
+        
+    <form class="form" method="post">
+    
+        <label for="email" class="form-label">عنوان</label>
+        <input  type="text" class="form-control" name="title" id="title"><br>
+        <label for="email" class="form-label">متن</label>
+        <textarea class="form-control" name="text"></textarea><br>
+        <input type="submit" value="بساز" class="btn btn-primary" name="submit" id="submit">
+        
+    </form>
+            <?php 
+                include 'openai.php';
+                if(isset($_POST['submit'])){
+                    if(empty($_POST['title'])){
+                        echo "<br><div class='alert form alert-warning'>لطفا فیلد مربوط به عنوان را وارد نمایید</div>";
+                    }
+                    elseif(!strlen(trim($_POST['text']))){
+                        echo "<br><div class='alert form text-center alert-warning'>لطفا فیلد مربوط به متن را وارد نمایید</div>";
+                    }
+                    else{
+                        echo 
+                        "<div class='container w-50 mt-5 bg-primary text-center text-white rounded p-3'>"
+                        .main($_POST['text'])
+                        ."</div>";
+                        #echo "ما محصولات بهداشتی باکیفیت را در وب سایت ما فراهم می‌کنیم. شما می‌توانید به ما اطمینان کنید که بهترین محصولات با کیفیت را در اختیار شما قرار دهید.";
+                    }
+                }
+            ?>
+    
+</div>
