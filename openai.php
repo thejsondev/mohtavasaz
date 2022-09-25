@@ -49,7 +49,7 @@ function create_text($text){
     
     $headers = array();
     $headers[] = 'Content-Type: application/json';
-    $headers[] = 'Authorization: Bearer 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';
+    $headers[] = 'Authorization: Bearer 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';
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     
     $result = curl_exec($ch);
@@ -61,7 +61,62 @@ function create_text($text){
     return $array->choices[0]->text;
 }
 function main($text){
-    #return translate(create_text(translate($text,"fa_en")),"en_fa");
-    return create_text($text);
+    return translate(create_text(translate($text,"fa_en")),"en_fa");
+    #return create_text($text);
+}
+function connect(){
+    $servername = "localhost:3306";
+    $username = "json";
+    $password = "70127074Aa$";
+    $dbname = "mohtavasaz";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+    return $conn;
+}
+function login($email , $password){
+    $conn = connect();
+    $sql = "SELECT email,password FROM user WHERE email = '$email' AND password = '$password'";
+    $result = $conn->query($sql);
+
+    if (!empty($result) AND $result->num_rows > 0) {
+        $_SESSION['email'] = $email;
+        header("location: ./?p=panel");
+    } else {
+        echo "<div class='alert alert-danger'>نام کاربری یا کلمه عبور شما نادرست می باشد</div>";
+    }
+    $conn->close();
+}
+function signup($email,$fullname,$password,$mobile){
+   
+    $conn = connect();
+    $sql = "INSERT INTO user (fullname, email, password,mobile,credit)
+    VALUES ('$fullname', '$email', '$password' , '$mobile',0)";
+
+    if ($conn->query($sql) === TRUE) {
+        header("location:./?p=login&register=success");
+        
+    }
+
+    $conn->close();
+}
+function logout(){
+    session_destroy();
+    header("location:./?p=login");
+}
+function get_credit($email){
+    $conn = connect();
+    $sql = "SELECT credit FROM user WHERE email = '$email'";
+    $result = $conn->query($sql);
+
+    if (!empty($result) AND $result->num_rows > 0) {
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    $conn->close();
 }
 ?>
